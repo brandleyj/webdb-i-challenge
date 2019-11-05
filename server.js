@@ -2,7 +2,7 @@ const express = require("express");
 
 const server = express();
 
-const AccountRouter = require("./data/accounts/acounts-router");
+const AccountRouter = require("./data/accounts/accounts-router");
 
 server.use("/api/accounts", AccountRouter);
 

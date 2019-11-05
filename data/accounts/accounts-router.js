@@ -24,27 +24,31 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-	if (req.body) {
-		db("accounts")
-			.insert(req.body, "id")
-			.then(([id]) => id)
-			.then(id => {
-				db("accounts")
-					.where({ id })
-					.first()
-					.then(account => {
-						res.status(201).json(account);
-					});
-			})
-			.catch(error =>
-				res.status(500).json({ message: "Could not add account" })
-			);
-	} else {
-		res.status(400).json({
-			message:
-				"Please fill enter a number greater than or equal to 0 for the budget"
-		});
-	}
+	console.log(req.body.name);
+	const account = req.body;
+	// if (validateAccount(req.body)) {
+	db("accounts")
+		.insert(account, "id")
+		.then(id => {
+			const idOfLastRecord = id[0];
+			res.status(201).json(idOfLastRecord);
+		})
+		// .then(id => {
+		// 	db("accounts")
+		// 		.select("*")
+		// 		.where({ id })
+		// 		.first()
+		// 		.then(account => {
+		// 			res.status(201).json(account);
+		// 		});
+		// })
+		.catch(error => res.status(500).json({ message: "Could not add account" }));
+	// } else {
+	// 	res.status(400).json({
+	// 		message:
+	// 			"Please fill enter a number greater than or equal to 0 for the budget"
+	// 	});
+	// }
 });
 
 router.delete("/:id", (req, res) => {
@@ -70,5 +74,9 @@ router.put("/:id", (req, res) => {
 			res.status(500).json({ message: "failed to update account" });
 		});
 });
+
+function validateAccount({ name, budget }) {
+	return name && typeof budget === "number" && budget >= 0;
+}
 
 module.exports = router;
