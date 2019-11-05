@@ -26,7 +26,7 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
 	console.log(req.body.name);
 	const account = req.body;
-	// if (validateAccount(req.body)) {
+	// if (req.body) {
 	db("accounts")
 		.insert(account, "id")
 		.then(id => {
@@ -74,9 +74,5 @@ router.put("/:id", (req, res) => {
 			res.status(500).json({ message: "failed to update account" });
 		});
 });
-
-function validateAccount({ name, budget }) {
-	return name && typeof budget === "number" && budget >= 0;
-}
 
 module.exports = router;
