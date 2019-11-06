@@ -26,29 +26,14 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
 	console.log(req.body.name);
 	const account = req.body;
-	// if (req.body) {
 	db("accounts")
 		.insert(account, "id")
 		.then(id => {
 			const idOfLastRecord = id[0];
 			res.status(201).json(idOfLastRecord);
 		})
-		// .then(id => {
-		// 	db("accounts")
-		// 		.select("*")
-		// 		.where({ id })
-		// 		.first()
-		// 		.then(account => {
-		// 			res.status(201).json(account);
-		// 		});
-		// })
+
 		.catch(error => res.status(500).json({ message: "Could not add account" }));
-	// } else {
-	// 	res.status(400).json({
-	// 		message:
-	// 			"Please fill enter a number greater than or equal to 0 for the budget"
-	// 	});
-	// }
 });
 
 router.delete("/:id", (req, res) => {
